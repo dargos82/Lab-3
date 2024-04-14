@@ -11,6 +11,17 @@ public class HuffmanNode {
 	public int frequency;
 	public HuffmanNode rightChild;
 	public HuffmanNode leftChild;
+	public boolean isLeaf;
+	
+	public HuffmanNode() {
+		
+		this.value = null;
+		this.frequency = 0;
+		this.leftChild = null;
+		this.rightChild = null;
+		this.isLeaf = true;
+		
+	} //end HuffmanNode()
 	
 	public HuffmanNode(String value, int frequency) {
 		
@@ -18,6 +29,7 @@ public class HuffmanNode {
 		this.frequency = frequency;
 		this.leftChild = null;
 		this.rightChild = null;
+		this.isLeaf = true;
 		
 	} //end HuffmanNode()
 	
@@ -27,6 +39,7 @@ public class HuffmanNode {
 		this.frequency = frequency;
 		this.leftChild = null;
 		this.rightChild = null;
+		this.isLeaf = false;
 		
 	} //end HuffmanNode()
 		
@@ -48,7 +61,7 @@ public class HuffmanNode {
 	
 	public String toString() {
 		
-		return "Value: " + this.value + " Frequency: " + this.frequency;
+		return "Value: " + this.value + " Frequency: " + this.frequency + " Leaf: " + this.isLeaf;
 		
 	}
 	
@@ -57,15 +70,16 @@ public class HuffmanNode {
 		HuffmanNode newNode = new HuffmanNode(value, frequency, leftChild, rightChild);
 		
 		if(compareNodes(firstNode, secondNode))
-			this.value = firstNode.value + secondNode.value;
+			this.value = firstNode.getValue() + secondNode.getValue();
 		
 		else 
-			this.value = secondNode.value + firstNode.value;
+			this.value = secondNode.getValue() + firstNode.getValue();
 		
-		this.frequency = firstNode.frequency + secondNode.frequency;
+		this.frequency = firstNode.getFrequency() + secondNode.getFrequency();
 		
 		this.leftChild = firstNode;
 		this.rightChild = secondNode;
+		this.isLeaf = false;
 		
 		return newNode;
 		

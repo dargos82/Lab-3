@@ -67,6 +67,7 @@ public class MinHeap {
 		size++;
 		heap[size] = node;
 		percolateUp();
+		percolateDown(); //added
 	
 	} //end insert
 	
@@ -77,7 +78,12 @@ public class MinHeap {
 		
 		while (hasParent(index) && (parent(index).frequency > heap[index].frequency)) {
 			swap(getParentIndex(index), index);
+			
 			index = getParentIndex(index);
+			
+			//if(hasRightChild(index) && leftChild(index).frequency > rightChild(index).frequency) //
+				//swap(getLeftChildIndex(index), getRightChildIndex(index)); //
+			
 		} //end while
 	} //end percolateUp()
 	
@@ -103,11 +109,17 @@ public class MinHeap {
 		
 		while(hasLeftChild(index)) {
 			
+			//int smallestChildIndex = getLeftChildIndex(index);
 			int smallestChildIndex = getLeftChildIndex(index);
 			
-			if (hasRightChild(index) && rightChild(index).frequency < leftChild(index).frequency) {
+			//if (hasRightChild(index) && rightChild(index).frequency < leftChild(index).frequency) {
+			if (hasRightChild(index) && (rightChild(index).frequency > leftChild(index).frequency)) {	
 				
-				smallestChildIndex = getRightChildIndex(index);
+				swap(getRightChildIndex(index), getLeftChildIndex(index));
+				
+				smallestChildIndex = getLeftChildIndex(index);
+				
+				//smallestChildIndex = getRightChildIndex(index);
 			} //end if
 		
 			if(heap[index].frequency < heap[smallestChildIndex].frequency)
