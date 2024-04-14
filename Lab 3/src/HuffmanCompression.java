@@ -94,10 +94,10 @@ public class HuffmanCompression {
 		if(rootNode.isLeaf) {
 			output = prefix;
 		}
-		else
+		else {
 			getHuffmanCodes(rootNode.leftChild, prefix + "0", output);
 			getHuffmanCodes(rootNode.rightChild, prefix + "1", output);
-		
+		} //end else
 		return output;	
 	} //end getHuffmanCodes
 
