@@ -87,9 +87,6 @@ public class HuffmanCompression {
 	} //end buildHuffmanTree
 	
 	public String getHuffmanCodes(HuffmanNode rootNode, String prefix, String output) {
-
-		prefix = "";
-		output = "";
 		
 		if(rootNode.isLeaf) {
 			output = prefix;
@@ -98,8 +95,21 @@ public class HuffmanCompression {
 			getHuffmanCodes(rootNode.leftChild, prefix + "0", output);
 			getHuffmanCodes(rootNode.rightChild, prefix + "1", output);
 		} //end else
+		
+		System.out.println(output);
+		
 		return output;	
 	} //end getHuffmanCodes
+	
+	public void printTree(HuffmanNode rootNode) {
+		
+		System.out.println(rootNode.toString()); //print root
+		if(rootNode.leftChild != null)
+			printTree(rootNode.leftChild);
+		if(rootNode.rightChild != null)
+			printTree(rootNode.rightChild);
+		
+	} //end printTree
 
 
 	private String freqTable;

@@ -67,7 +67,7 @@ public class MinHeap {
 		size++;
 		heap[size] = node;
 		percolateUp();
-		percolateDown(); //added
+		//percolateDown(); //added
 	
 	} //end insert
 	

@@ -23,7 +23,13 @@ public class Project3 {
 		
 		HuffmanNode rootNode = hc.buildHuffmanTree();
 		
-		hc.getHuffmanCodes(rootNode, null, null);
+		System.out.println("The Huffman code is: ");
+		hc.getHuffmanCodes(rootNode, "", "");
+		
+		System.out.println("\n**********\n");
+		
+		System.out.println("The tree in preorder: ");
+		hc.printTree(rootNode);
 		
 		
 		
