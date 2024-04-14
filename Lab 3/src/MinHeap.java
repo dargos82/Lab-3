@@ -1,103 +1,132 @@
 
 /**
  * 
+ * Reference: https://medium.com/@ankur.singh4012/implementing-min-heap-in-java-413d1c20f90d
  */
 public class MinHeap {
 	
 	HuffmanNode[] heap;
-	int size;
+	int size = 0;
 	int current;
 	//int maxSize;
 	
 	public MinHeap() {
 		
-		heap = new HuffmanNode[27];
+		this.heap = new HuffmanNode[27];
 		heap[0] = null;
-		this.size = 0;
 		
-	} //end MinHeap
+	} //end MinHeap constructor
 	
-	private int parent(int pos) {
-		
-		return pos / 2;
-		
-	}
+	private int getLeftChildIndex(int parentIndex) {
+		return (parentIndex * 2);
+	} //end getLeftChildIndex
 	
-	private int leftChild(int pos) {
-		
-		return (2 * pos);
-		
-	}
+	private int getRightChildIndex(int parentIndex) {
+		return (parentIndex * 2) + 1;
+	} //end getRightChldIndex
 	
-	private int rightChild(int pos) {
-		
-		return (2 * pos) + 1;
-		
+	private int getParentIndex(int childIndex) {
+		return (childIndex / 2);
+	} //end getParentIndex
+	
+	private boolean hasLeftChild(int index) {
+		return getLeftChildIndex(index) <= size;
+	} //end hasLeftChild
+	
+	private boolean hasRightChild(int index) {
+		return getRightChildIndex(index) <= size;
+	} //end hasRightChild
+	
+	private boolean hasParent(int index) {
+		return getParentIndex(index) > 0;
+	} //end hasParent
+	
+	private HuffmanNode leftChild(int parentIndex) {
+		return heap[getLeftChildIndex(parentIndex)];
+	} //end leftChild
+	
+	private HuffmanNode rightChild(int parentIndex) {
+		return heap[getRightChildIndex(parentIndex)];
 	} //end rightChild
 	
-	private boolean isLeaf(int pos) {
-		
-		if (pos > (size / 2))
-			return true;
-		
-		else
-			return false;
-	} //end isLeaf
+	private HuffmanNode parent(int childIndex) {
+		return heap[getParentIndex(childIndex)];
+	} //end parent
 	
-	private void swap(int lowerValue, int higherValue) {
+	private void swap(int lowerIndex, int higherIndex) {
 		
 		HuffmanNode temp;
-		temp = heap[lowerValue];
-		heap[lowerValue] = heap[higherValue];
-		heap[higherValue] = temp;
+		temp = heap[lowerIndex];
+		heap[lowerIndex] = heap[higherIndex];
+		heap[higherIndex] = temp;
 		
 	} //end swap
 	
 	public void insert(HuffmanNode node) {
 		
-		if (size >= 27)
-			return;
-		
-		else
-			size++;
-			int current = size;
-			heap[current] = node;
-			
-		if (current % 2 == 0) {
-			while (heap[current].frequency < heap[parent(current)].frequency) {
-							
-				swap(current, parent(current));
-				current = parent(current);
-				
-			} //end while
-		} //end if
-		
-		else {
-			while (heap[current].frequency < heap[parent(current-1)].frequency) {
-				
-				swap(current, parent(current-1));
-				current = parent(current-1);
-				
-			} //end while
-		} //end else
+		size++;
+		heap[size] = node;
+		percolateUp();
+	
 	} //end insert
+	
+	//moves lower value node from larger index to smaller index in the array
+	private void percolateUp() {
+		
+		int index = size;
+		
+		while (hasParent(index) && (parent(index).frequency > heap[index].frequency)) {
+			swap(getParentIndex(index), index);
+			index = getParentIndex(index);
+		} //end while
+	} //end percolateUp()
 	
 	public HuffmanNode remove() {
 		
 		HuffmanNode minNode;
-		HuffmanNode temp;
 		
 		minNode = heap[1]; //assign variable to node in [1]
-		temp = heap[size]; //temp variable to hold node from [last]
-		heap[1] = temp; //move last node to [1]
+		heap[1] = heap[size]; //move last node to [1]
 		heap[size] = null; //set [last] to null after removing node
-		size--;
+		size--; //decrement size by 1
 
-		//need to add heapify() here
+		percolateDown();
 		
 		return minNode;
 		
 	} //end remove
 	
+	//moves higher value node from smaller index to larger index in the array
+	private void percolateDown() {
+		
+		int index = 1;
+		
+		while(hasLeftChild(index)) {
+			
+			int smallestChildIndex = getLeftChildIndex(index);
+			
+			if (hasRightChild(index) && rightChild(index).frequency < leftChild(index).frequency) {
+				
+				smallestChildIndex = getRightChildIndex(index);
+			} //end if
+		
+			if(heap[index].frequency < heap[smallestChildIndex].frequency)
+				break;
+			else
+				swap(index, smallestChildIndex);
+			
+			index = smallestChildIndex;
+			
+		} //end while
+
+	} //end percolateDown()
 	
+	public void printMinHeap() {
+		
+		for(int i=1; i <= size; i++) {
+		
+		System.out.println(heap[i].toString());
+		} //end for
+	} //end printMinHeap
+		
 } //end MinHeap
