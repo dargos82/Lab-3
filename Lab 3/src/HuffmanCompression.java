@@ -176,6 +176,53 @@ public class HuffmanCompression {
 		reader.close();
 		
 	} //end encodeHuffman
+	
+	public void decodeHuffman(HuffmanNode rootNode) throws IOException {
+		BufferedReader reader = null;
+		String strInput;
+		String strOutput = "";
+		String searchStr = "";
+		
+		try {
+			reader = new BufferedReader(new FileReader(codedText));
+			//writer = new BufferedWriter(new FileWriter(convertedOutput));
+
+		} catch (FileNotFoundException e) {
+			System.out.println("Error opening the file.");
+		}
+		
+		while((strInput = reader.readLine()) != null) {
+			
+			HuffmanNode searchNode = rootNode;
+			
+			for(int i=0; i < strInput.length(); i++) {
+				
+				searchStr = "" + strInput.charAt(i);
+				
+				if(searchStr == "0") {
+					
+					searchNode = searchNode.leftChild;
+				} //end if
+				
+				else
+					searchNode = searchNode.rightChild;
+				
+				if(searchNode.isLeaf) {
+					
+					strOutput += searchNode.value;
+					searchNode = rootNode;
+				}
+					
+			} //end for
+				
+		} //end while
+			
+			System.out.println(strOutput);
+			
+			strOutput = "";
+			
+			//return strOutput;
+	} //end decodeHuffman
 
 
 	private String freqTable;

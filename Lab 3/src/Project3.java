@@ -33,8 +33,12 @@ public class Project3 {
 		
 		hc.encodeHuffman(rootNode);
 		
+		System.out.println("\n**********\n");
 		
+		hc.decodeHuffman(rootNode);
 		
 	} //end main
+	
+	
 
 }// end Project3

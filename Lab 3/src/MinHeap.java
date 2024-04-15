@@ -67,7 +67,13 @@ public class MinHeap {
 		size++;
 		heap[size] = node;
 		percolateUp();
-		//percolateDown(); //added
+		
+		if(heap[2] != null && heap[3] != null) {
+		
+			if(compare(heap[2], heap[3])) {
+				swap(2, 3);
+			}
+		}
 	
 	} //end insert
 	
@@ -76,16 +82,75 @@ public class MinHeap {
 		
 		int index = size;
 		
-		while (hasParent(index) && (parent(index).frequency > heap[index].frequency)) {
+		while(hasParent(index) && compare(heap[index], parent(index)) ) {
+			
+			swap(getParentIndex(index), index);
+			index = getParentIndex(index);	
+		}
+		
+		/*while (hasParent(index) && (parent(index).frequency > heap[index].frequency)) {
 			swap(getParentIndex(index), index);
 			
 			index = getParentIndex(index);
 			
-			//if(hasRightChild(index) && leftChild(index).frequency > rightChild(index).frequency) //
-				//swap(getLeftChildIndex(index), getRightChildIndex(index)); //
-			
-		} //end while
+		} //end while*/
 	} //end percolateUp()
+	
+	public void minHeapify(int index) {
+		
+		int left = getLeftChildIndex(index);
+		int right = getRightChildIndex(index);
+		
+		int smallest = index;
+		
+		if(left < size && (compare(leftChild(index), parent(index)))) {
+			
+			smallest = left;
+		}
+		
+		if(right < size && (compare(rightChild(index), parent(index)))) {
+			
+			smallest = right;
+		}
+		
+		if(smallest != index) {
+			
+			swap(index, smallest);
+			minHeapify(smallest);
+		}
+		
+	} //end minHeapify
+	
+	private boolean compare(HuffmanNode firstNode, HuffmanNode secondNode) {
+		
+		while(secondNode != null) {
+		
+			if(firstNode.frequency < secondNode.frequency) {
+				
+				return true;
+			}
+			
+			else if(firstNode.frequency == secondNode.frequency && 
+					firstNode.value.length() > secondNode.value.length()) {
+			
+				return true;
+				
+			}
+			
+			else if (firstNode.frequency == secondNode.frequency && 
+					firstNode.value.charAt(0) < secondNode.value.charAt(0)) {
+			
+				return true;
+				
+			}
+			
+			else
+				return false;
+				
+		}
+		
+		return true;
+	}
 	
 	public HuffmanNode remove() {
 		
@@ -95,8 +160,9 @@ public class MinHeap {
 		heap[1] = heap[size]; //move last node to [1]
 		heap[size] = null; //set [last] to null after removing node
 		size--; //decrement size by 1
-
-		percolateDown();
+		
+		//percolateDown();
+		minHeapify(1);
 		
 		return minNode;
 		
