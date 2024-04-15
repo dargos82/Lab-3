@@ -31,6 +31,8 @@ public class Project3 {
 		System.out.println("The tree in preorder: ");
 		hc.printTree(rootNode);
 		
+		hc.encodeHuffman(rootNode);
+		
 		
 		
 	} //end main

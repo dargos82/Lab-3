@@ -110,6 +110,31 @@ public class HuffmanCompression {
 			printTree(rootNode.rightChild);
 		
 	} //end printTree
+	
+	public void encodeHuffman(HuffmanNode rootNode) throws IOException {
+		
+		BufferedReader reader = null;
+		String strInput;
+		String strOutput;
+		
+		try {
+			reader = new BufferedReader(new FileReader(plainText));
+			//writer = new BufferedWriter(new FileWriter(convertedOutput));
+
+		} catch (FileNotFoundException e) {
+			System.out.println("Error opening the file.");
+		}
+		
+		while((strInput = reader.readLine()) != null) {
+			
+			strInput = strInput.toUpperCase(); //convert all letters to uppercase
+			strInput = strInput.replaceAll("\\p{Punct}", ""); //remove punctuation
+			strInput = strInput.replaceAll(" ", ""); //remove whitespaces
+			
+			System.out.println(strInput);
+		} //end while
+		
+	} //end encodeHuffman
 
 
 	private String freqTable;
