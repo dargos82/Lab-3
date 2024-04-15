@@ -117,7 +117,7 @@ public class HuffmanCompression {
 		String strInput;
 		String strOutput = "";
 		String searchStr = "";
-		HuffmanNode searchNode = rootNode;
+		//HuffmanNode searchNode = rootNode;
 		
 		try {
 			reader = new BufferedReader(new FileReader(plainText));
@@ -136,6 +136,9 @@ public class HuffmanCompression {
 			System.out.println(strInput); //testing/debugging
 			
 			for(int i=0; i < strInput.length(); i++) {
+				
+				HuffmanNode searchNode = rootNode;
+				//strOutput = "";
 				
 				searchStr = "" + strInput.charAt(i);
 				
@@ -164,6 +167,8 @@ public class HuffmanCompression {
 			} //end for
 			
 			System.out.println(strOutput);
+			
+			strOutput = "";
 			
 			//return strOutput;
 		} //end while
