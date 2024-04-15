@@ -115,7 +115,9 @@ public class HuffmanCompression {
 		
 		BufferedReader reader = null;
 		String strInput;
-		String strOutput;
+		String strOutput = "";
+		String searchStr = "";
+		HuffmanNode searchNode = rootNode;
 		
 		try {
 			reader = new BufferedReader(new FileReader(plainText));
@@ -131,8 +133,42 @@ public class HuffmanCompression {
 			strInput = strInput.replaceAll("\\p{Punct}", ""); //remove punctuation
 			strInput = strInput.replaceAll(" ", ""); //remove whitespaces
 			
-			System.out.println(strInput);
+			System.out.println(strInput); //testing/debugging
+			
+			for(int i=0; i < strInput.length(); i++) {
+				
+				searchStr = "" + strInput.charAt(i);
+				
+				while(!searchNode.isLeaf) {
+					
+					if(searchNode.leftChild != null && 
+							searchNode.leftChild.value.contains(searchStr)) {
+						
+						searchNode = searchNode.leftChild;
+						strOutput = strOutput + "0";
+						
+					} //end if
+					
+					else if (searchNode.rightChild != null && 
+							searchNode.rightChild.value.contains(searchStr)) {
+						
+						searchNode = searchNode.rightChild;
+						strOutput = strOutput + "1";
+					} //end else if
+					
+					//else {
+					//	searchNode = null;
+					//}
+				} //end while
+				
+			} //end for
+			
+			System.out.println(strOutput);
+			
+			//return strOutput;
 		} //end while
+		
+		reader.close();
 		
 	} //end encodeHuffman
 
