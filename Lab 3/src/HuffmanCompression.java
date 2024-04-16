@@ -1,11 +1,6 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-/**
- * 
- */
-import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -14,18 +9,38 @@ import java.io.IOException;
 public class HuffmanCompression {
 	
 	public HuffmanCompression(String freqTableFile, String plainTextFile, 
-			String codedFile, String outputFile) {
+			String codedFile) {
 		
 		freqTable = freqTableFile;
 		plainText = plainTextFile;
 		codedText = codedFile;
-		convertedOutput = outputFile;		
+
 	} //end HuffmanCompression
+	
+	public void huffmanProgram() throws NumberFormatException, IOException {
+		
+		HuffmanNode rootNode = buildHuffmanTree();
+		
+		System.out.println("The tree in preorder is: \n");
+		printTree(rootNode);
+		
+		System.out.println("\n**********\n");
+		
+		System.out.println("The Huffman code is: \n");
+		getHuffmanCodes(rootNode, "", "");
+		
+		System.out.println("\n**********\n");
+
+		encodeHuffman(rootNode);
+		
+		System.out.println("\n**********\n");
+		
+		decodeHuffman(rootNode);
+	}
 		
 	public HuffmanNode buildHuffmanTree() throws NumberFormatException, IOException {
 		
 		BufferedReader reader = null;
-		//BufferedWriter writer = null;
 		String freqInput;
 		String value;
 		String frequencyStr;
@@ -34,7 +49,6 @@ public class HuffmanCompression {
 		
 		try {
 			reader = new BufferedReader(new FileReader(freqTable));
-			//writer = new BufferedWriter(new FileWriter(convertedOutput));
 
 		} catch (FileNotFoundException e) {
 			System.out.println("Error opening the file.");
@@ -54,18 +68,16 @@ public class HuffmanCompression {
 			
 		} //end while
 		
-		minHeap.printMinHeap(); //testing/debugging only
-		System.out.println("\n******\n");
+		//minHeap.printMinHeap(); //testing/debugging only
+		//System.out.println("\n******\n");
 		
 		reader.close();
-		//writer.close();
 		
 		while(minHeap.size > 1) {
 			
 			HuffmanNode tempNode1 = new HuffmanNode();
 			HuffmanNode tempNode2 = new HuffmanNode();
 			HuffmanNode tempNode3 = new HuffmanNode();
-			//HuffmanNode tempNode4 = new HuffmanNode();
 			
 			tempNode1 = null;
 			tempNode2 = null;
@@ -73,12 +85,11 @@ public class HuffmanCompression {
 			tempNode1 = minHeap.remove();
 			tempNode2 = minHeap.remove();
 			
-			//tempNode4 = tempNode3.mergeNodes(tempNode1, tempNode2);
 			tempNode3.mergeNodes(tempNode1, tempNode2);
 			minHeap.insert(tempNode3);
 			
-			minHeap.printMinHeap(); //testing/debugging only
-			System.out.println("\n******\n");
+			//minHeap.printMinHeap(); //testing/debugging only
+			//System.out.println("\n******\n");
 			
 		} //end while
 		
@@ -86,9 +97,14 @@ public class HuffmanCompression {
 		
 	} //end buildHuffmanTree
 	
-	public String getHuffmanCodes(HuffmanNode rootNode, String prefix, String output) {
+	public void getHuffmanCodes(HuffmanNode rootNode, String prefix, String output) throws IOException {
 		
-		if(rootNode.isLeaf) {
+		
+		if(rootNode == null) {
+			return;
+		}
+		
+		if(rootNode.isLeaf()) {
 			output = prefix;
 		}
 		else {
@@ -96,18 +112,23 @@ public class HuffmanCompression {
 			getHuffmanCodes(rootNode.rightChild, prefix + "1", output);
 		} //end else
 		
-		System.out.println(output);
-		
-		return output;	
+		System.out.println(rootNode.getValue() + ":" + output); //testing
+
+		//return rootNode.getValue() + ":" + output;	
+	
 	} //end getHuffmanCodes
 	
-	public void printTree(HuffmanNode rootNode) {
+	/**
+	 * @param rootNode
+	 * @throws IOException
+	 */
+	public void printTree(HuffmanNode rootNode) throws IOException {
 		
-		System.out.println(rootNode.toString()); //print root
-		if(rootNode.leftChild != null)
-			printTree(rootNode.leftChild);
-		if(rootNode.rightChild != null)
-			printTree(rootNode.rightChild);
+			System.out.println(rootNode.toString()); //print root
+			if(rootNode.leftChild != null)
+				printTree(rootNode.leftChild);
+			if(rootNode.rightChild != null)
+				printTree(rootNode.rightChild);
 		
 	} //end printTree
 	
@@ -117,11 +138,9 @@ public class HuffmanCompression {
 		String strInput;
 		String strOutput = "";
 		String searchStr = "";
-		//HuffmanNode searchNode = rootNode;
 		
 		try {
 			reader = new BufferedReader(new FileReader(plainText));
-			//writer = new BufferedWriter(new FileWriter(convertedOutput));
 
 		} catch (FileNotFoundException e) {
 			System.out.println("Error opening the file.");
@@ -132,8 +151,6 @@ public class HuffmanCompression {
 			strInput = strInput.toUpperCase(); //convert all letters to uppercase
 			strInput = strInput.replaceAll("\\p{Punct}", ""); //remove punctuation
 			strInput = strInput.replaceAll(" ", ""); //remove whitespaces
-			
-			System.out.println(strInput); //testing/debugging
 			
 			for(int i=0; i < strInput.length(); i++) {
 				
@@ -159,18 +176,15 @@ public class HuffmanCompression {
 						strOutput = strOutput + "1";
 					} //end else if
 					
-					//else {
-					//	searchNode = null;
-					//}
 				} //end while
 				
 			} //end for
 			
-			System.out.println(strOutput);
+			System.out.println("Input: " + strInput + "\n");
+			System.out.println("Output: " + strOutput + "\n");
 			
 			strOutput = "";
 			
-			//return strOutput;
 		} //end while
 		
 		reader.close();
@@ -185,14 +199,13 @@ public class HuffmanCompression {
 		
 		try {
 			reader = new BufferedReader(new FileReader(codedText));
-			//writer = new BufferedWriter(new FileWriter(convertedOutput));
 
 		} catch (FileNotFoundException e) {
 			System.out.println("Error opening the file.");
 		}
 		
 		while((strInput = reader.readLine()) != null) {
-			
+			System.out.println("Input: " + strInput + "\n");
 			HuffmanNode searchNode = rootNode;
 			
 			for(int i=0; i < strInput.length(); i++) {
@@ -217,7 +230,8 @@ public class HuffmanCompression {
 				
 		} //end while
 			
-			System.out.println(strOutput);
+			System.out.println("Input: " + strInput + "\n");
+			System.out.println("Output: " + strOutput + "\n");
 			
 			strOutput = "";
 			
@@ -228,6 +242,6 @@ public class HuffmanCompression {
 	private String freqTable;
 	private String plainText;
 	private String codedText;
-	private String convertedOutput;
+	private String output;
 
 }

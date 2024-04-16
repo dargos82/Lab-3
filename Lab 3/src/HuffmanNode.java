@@ -1,6 +1,3 @@
-/**
- * 
- */
 
 /**
  * 
@@ -65,20 +62,31 @@ public class HuffmanNode {
 		
 	}
 	
+	public boolean isLeaf() {
+		return isLeaf;
+	}
+
+	public void setLeaf(boolean isLeaf) {
+		this.isLeaf = isLeaf;
+	}
+
 	public HuffmanNode mergeNodes(HuffmanNode firstNode, HuffmanNode secondNode) {
 		
 		HuffmanNode newNode = new HuffmanNode(value, frequency, leftChild, rightChild);
 		
-		if(compareNodes(firstNode, secondNode))
+		if(compareNodes(firstNode, secondNode)) {
 			this.value = firstNode.getValue() + secondNode.getValue();
+			this.leftChild = firstNode;
+			this.rightChild = secondNode;
+		}
 		
-		else 
+		else {
 			this.value = secondNode.getValue() + firstNode.getValue();
+			this.leftChild = firstNode;
+			this.rightChild = secondNode;
+		}
 		
 		this.frequency = firstNode.getFrequency() + secondNode.getFrequency();
-		
-		this.leftChild = firstNode;
-		this.rightChild = secondNode;
 		this.isLeaf = false;
 		
 		return newNode;

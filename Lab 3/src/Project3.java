@@ -2,7 +2,14 @@
  * 
  */
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 
 /**
  * 
@@ -18,27 +25,27 @@ public class Project3 {
 		if (args.length != 4) {
 		    System.out.println("Invalid Number of Arguments");
 		}
+		
+		//open output file and adjust print stream to output file
+		BufferedWriter outputData = null;
+		PrintStream printStream = null;
+		
+		try {
+			outputData = new BufferedWriter(new FileWriter(args[3]));
 
-		HuffmanCompression hc = new HuffmanCompression( args[0], args[1], args[2], args[3] );
+		} catch (FileNotFoundException e) {
+			System.out.println("Error locating the file.");
+		}
+
+		printStream = new PrintStream(new FileOutputStream(args[3]));
+		System.setOut(printStream);
+
+		HuffmanCompression hc = new HuffmanCompression( args[0], args[1], args[2]);
+		hc.huffmanProgram();
 		
-		HuffmanNode rootNode = hc.buildHuffmanTree();
-		
-		System.out.println("The Huffman code is: ");
-		hc.getHuffmanCodes(rootNode, "", "");
-		
-		System.out.println("\n**********\n");
-		
-		System.out.println("The tree in preorder: ");
-		hc.printTree(rootNode);
-		
-		hc.encodeHuffman(rootNode);
-		
-		System.out.println("\n**********\n");
-		
-		hc.decodeHuffman(rootNode);
+		outputData.close();
 		
 	} //end main
-	
-	
+
 
 }// end Project3

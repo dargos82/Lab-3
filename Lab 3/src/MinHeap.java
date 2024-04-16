@@ -66,34 +66,24 @@ public class MinHeap {
 		
 		size++;
 		heap[size] = node;
-		percolateUp();
-		
-		if(heap[2] != null && heap[3] != null) {
-		
-			if(compare(heap[2], heap[3])) {
-				swap(2, 3);
-			}
-		}
+		percolateUp(size);
 	
 	} //end insert
 	
 	//moves lower value node from larger index to smaller index in the array
-	private void percolateUp() {
-		
-		int index = size;
-		
-		while(hasParent(index) && compare(heap[index], parent(index)) ) {
+	private void percolateUp(int index) {
+				
+		while (hasParent(index)) {
 			
-			swap(getParentIndex(index), index);
-			index = getParentIndex(index);	
-		}
-		
-		/*while (hasParent(index) && (parent(index).frequency > heap[index].frequency)) {
-			swap(getParentIndex(index), index);
+			if(parent(index).getFrequency() > heap[index].getFrequency()) {
+			
+				swap(getParentIndex(index), index);
+			
+			//index = getParentIndex(index);
+			}
 			
 			index = getParentIndex(index);
-			
-		} //end while*/
+		} //end while
 	} //end percolateUp()
 	
 	public void minHeapify(int index) {
@@ -103,12 +93,12 @@ public class MinHeap {
 		
 		int smallest = index;
 		
-		if(left < size && (compare(leftChild(index), parent(index)))) {
+		if(left <= size && heap[left].getFrequency() < heap[index].getFrequency()) {
 			
 			smallest = left;
 		}
 		
-		if(right < size && (compare(rightChild(index), parent(index)))) {
+		if(right <= size && heap[right].getFrequency() < heap[index].getFrequency()) {
 			
 			smallest = right;
 		}
@@ -121,37 +111,6 @@ public class MinHeap {
 		
 	} //end minHeapify
 	
-	private boolean compare(HuffmanNode firstNode, HuffmanNode secondNode) {
-		
-		while(secondNode != null) {
-		
-			if(firstNode.frequency < secondNode.frequency) {
-				
-				return true;
-			}
-			
-			else if(firstNode.frequency == secondNode.frequency && 
-					firstNode.value.length() > secondNode.value.length()) {
-			
-				return true;
-				
-			}
-			
-			else if (firstNode.frequency == secondNode.frequency && 
-					firstNode.value.charAt(0) < secondNode.value.charAt(0)) {
-			
-				return true;
-				
-			}
-			
-			else
-				return false;
-				
-		}
-		
-		return true;
-	}
-	
 	public HuffmanNode remove() {
 		
 		HuffmanNode minNode;
@@ -161,43 +120,12 @@ public class MinHeap {
 		heap[size] = null; //set [last] to null after removing node
 		size--; //decrement size by 1
 		
-		//percolateDown();
+		//percolateDown(1);
 		minHeapify(1);
 		
 		return minNode;
 		
 	} //end remove
-	
-	//moves higher value node from smaller index to larger index in the array
-	private void percolateDown() {
-		
-		int index = 1;
-		
-		while(hasLeftChild(index)) {
-			
-			//int smallestChildIndex = getLeftChildIndex(index);
-			int smallestChildIndex = getLeftChildIndex(index);
-			
-			//if (hasRightChild(index) && rightChild(index).frequency < leftChild(index).frequency) {
-			if (hasRightChild(index) && (rightChild(index).frequency > leftChild(index).frequency)) {	
-				
-				swap(getRightChildIndex(index), getLeftChildIndex(index));
-				
-				smallestChildIndex = getLeftChildIndex(index);
-				
-				//smallestChildIndex = getRightChildIndex(index);
-			} //end if
-		
-			if(heap[index].frequency < heap[smallestChildIndex].frequency)
-				break;
-			else
-				swap(index, smallestChildIndex);
-			
-			index = smallestChildIndex;
-			
-		} //end while
-
-	} //end percolateDown()
 	
 	public void printMinHeap() {
 		
