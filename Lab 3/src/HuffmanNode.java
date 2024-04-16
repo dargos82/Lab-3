@@ -70,6 +70,22 @@ public class HuffmanNode {
 		this.isLeaf = isLeaf;
 	}
 
+	public HuffmanNode getRightChild() {
+		return rightChild;
+	}
+
+	public void setRightChild(HuffmanNode rightChild) {
+		this.rightChild = rightChild;
+	}
+
+	public HuffmanNode getLeftChild() {
+		return leftChild;
+	}
+
+	public void setLeftChild(HuffmanNode leftChild) {
+		this.leftChild = leftChild;
+	}
+
 	public HuffmanNode mergeNodes(HuffmanNode firstNode, HuffmanNode secondNode) {
 		
 		HuffmanNode newNode = new HuffmanNode(value, frequency, leftChild, rightChild);

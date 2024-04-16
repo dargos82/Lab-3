@@ -195,7 +195,7 @@ public class HuffmanCompression {
 		BufferedReader reader = null;
 		String strInput;
 		String strOutput = "";
-		String searchStr = "";
+		//String searchStr = "";
 		
 		try {
 			reader = new BufferedReader(new FileReader(codedText));
@@ -205,33 +205,38 @@ public class HuffmanCompression {
 		}
 		
 		while((strInput = reader.readLine()) != null) {
-			System.out.println("Input: " + strInput + "\n");
+
 			HuffmanNode searchNode = rootNode;
 			
 			for(int i=0; i < strInput.length(); i++) {
 				
-				searchStr = "" + strInput.charAt(i);
+				char c = strInput.charAt(i);
 				
-				if(searchStr == "0") {
+				
+				if(c == '0') {
 					
-					searchNode = searchNode.leftChild;
+					searchNode = searchNode.getLeftChild();
 				} //end if
 				
-				else
-					searchNode = searchNode.rightChild;
+				else if(c == '1') {
+					searchNode = searchNode.getRightChild();
+				}
 				
-				if(searchNode.isLeaf) {
+				if(searchNode.isLeaf()) {
 					
-					strOutput += searchNode.value;
+					strOutput += searchNode.getValue();
 					searchNode = rootNode;
 				}
 					
 			} //end for
-				
-		} //end while
 			
 			System.out.println("Input: " + strInput + "\n");
 			System.out.println("Output: " + strOutput + "\n");
+				
+		} //end while
+			
+			//System.out.println("Input: " + strInput + "\n");
+			//System.out.println("Output: " + strOutput + "\n");
 			
 			strOutput = "";
 			
